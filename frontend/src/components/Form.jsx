@@ -46,7 +46,7 @@ export default function Form({ route, method }) {
             <input
                 className="form-input"
                 type="text"
-                value={userName}
+                value={username}
                 onChange={(e) => setUserName(e.target.value)}
                 placeholder="Name">
             </input>
