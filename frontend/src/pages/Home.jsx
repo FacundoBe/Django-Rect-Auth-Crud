@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import api from '../api'
+import Note from '../components/Note'
+import '../styles/home.css'
+
 
 export default function Home() {
 
@@ -15,18 +18,18 @@ export default function Home() {
     function getNotes() {
         api.get("/api/notes/")
             .then(res => res.data)
-            .then(data => { setNotes(data); console.log(data) })
+            .then(data => { setNotes(data) })
             .catch(err => alert(err))
     }
 
+
     function deleteNote(id) {
-        api.delete(`/api/delete/${id}/`).then(res => {
+        api.delete(`/api/notes/delete/${id}/`).then(res => {
             if (res.status === 204) alert("Note deleted")
             else alert("Failed to delete the note")
             getNotes() // actualiza las notas desde el servidor, seria mas eficiente eliminar la nota del estado directamente
         }
         ).catch(error => alert(error))
-      
     }
 
     function createNote(e) {
@@ -41,16 +44,17 @@ export default function Home() {
             .catch(err => alert(err))
     }
 
+
     return (
 
         <div>Notes
-            <div>
-                {notes.map(note => {
-                    return <div key={note.id}>
-                        <p >title {note.title}</p>
-                    </div>
-                })}
-            </div>
+            {notes.map(note => (<Note
+                key={note.id}
+                note={note}
+                deleteNote={deleteNote}
+            />
+            ))}
+
 
             <h2> Create Note</h2>
             <form onSubmit={createNote}>

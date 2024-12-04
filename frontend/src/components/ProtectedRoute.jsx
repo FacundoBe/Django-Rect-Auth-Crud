@@ -39,10 +39,10 @@ export default function ProtectedRoute({ children }) {
             return
         }
         const decoded = jwtDecode(token)
-        const tokenExpiration = decoded.tokenExpiration
+        const tokenExpiration = decoded.exp
         const now = Date.now() / 1000 // fecha en seg.
 
-        if (tokenExpiration > now) {
+        if (tokenExpiration < now) {
             await refreshToken()
         } else {
             setIsAuthorized(true)
